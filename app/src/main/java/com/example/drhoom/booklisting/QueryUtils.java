@@ -119,19 +119,24 @@ public final class QueryUtils {
                 JSONObject volumeInfo = currentBook.getJSONObject("volumeInfo");
 
                 String title = volumeInfo.getString("title");
-                JSONArray authorArray = volumeInfo.getJSONArray("authors");
+                JSONArray authorArray = volumeInfo.optJSONArray("authors");
+                String bookAuthors = "";
 
-                String authors = "";
-
-                for (int j = 0; j < authorArray.length(); j++) {
-                    authors+=authorArray.getString(j);
-                    authors+=", ";
+                if (authorArray == null) {
+                    bookAuthors = "Unknown";
+                } else {
+                    for (int j = 0; j < authorArray.length(); j++) {
+                        String author = authorArray.getString(j);
+                        if (bookAuthors.isEmpty()) {
+                            bookAuthors = author;
+                        } else if (j == authorArray.length() - 1) {
+                            bookAuthors = bookAuthors + " and " + author;
+                        } else {
+                            bookAuthors = bookAuthors + ", " + author;
+                        }
+                    }
                 }
-
-                // remove last comma & space
-                authors = authors.substring(0,authors.length()-2);
-
-                Book book = new Book(title, authors);
+                Book book = new Book(title, bookAuthors);
                 books.add(book);
             }
 
