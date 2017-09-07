@@ -18,20 +18,19 @@ public class BookAdapter extends ArrayAdapter<Book> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        View listItemView = convertView;
-        if (listItemView == null) {
-            listItemView = LayoutInflater.from(getContext()).inflate(
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(
                     R.layout.book_list_item, parent, false);
         }
 
         Book currentBook = getItem(position);
 
-        TextView titleView = (TextView) listItemView.findViewById(R.id.book_title);
+        TextView titleView = (TextView) convertView.findViewById(R.id.book_title);
         titleView.setText(currentBook.getTitle());
 
-        TextView authorView = (TextView) listItemView.findViewById(R.id.book_author);
+        TextView authorView = (TextView) convertView.findViewById(R.id.book_author);
         authorView.setText(currentBook.getAuthor());
 
-        return listItemView;
+        return convertView;
     }
 }
